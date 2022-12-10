@@ -112,31 +112,136 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		681CDB252940532800DA599C /* View */ = {
+		681CDB262940533400DA599C /* Entitiy */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB1D294052BC00DA599C /* KeyframeImage.swift */,
+				68CA6B7D2940A38500C3ABC6 /* TrimError.swift */,
+				68CA6B7F2940A3AE00C3ABC6 /* VideoFrameImage.swift */,
+			);
+			path = Entitiy;
+			sourceTree = "<group>";
+		};
+		682241592944BDB3005AC7D7 /* VideoEdit */ = {
+			isa = PBXGroup;
+			children = (
+				682241632944C187005AC7D7 /* VideoEdit+View */,
+				6822415E2944BF83005AC7D7 /* VideoEdit+Controller */,
+			);
+			path = VideoEdit;
+			sourceTree = "<group>";
+		};
+		6822415A2944BDB6005AC7D7 /* VideoTakeController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = VideoTakeController;
+			sourceTree = "<group>";
+		};
+		6822415B2944BDC6005AC7D7 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB352940548100DA599C /* VideoNavigationView.swift */,
+				68CA6B7B2940A35D00C3ABC6 /* AVAsset+Extension.swift */,
+				68CA6B8F2940A78400C3ABC6 /* Data+Extension.swift */,
+				68CA6B792940A34100C3ABC6 /* AVPlayer+Extension.swift */,
+				681CDB3D294054F100DA599C /* UIViewController+Extension.swift */,
+				681CDB432940553C00DA599C /* UICollectionView+Extension.swift */,
+				681CDB3F2940550300DA599C /* UIView+Extension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		6822415C2944BDD7005AC7D7 /* Video+Indicator */ = {
 			isa = PBXGroup;
 			children = (
 				681CDB1F294052DE00DA599C /* VideoProgressIndicator.swift */,
 				681CDB21294052FE00DA599C /* VideoEndIndicator.swift */,
 				681CDB232940531500DA599C /* VideoStartIndicator.swift */,
 			);
-			path = View;
+			path = "Video+Indicator";
 			sourceTree = "<group>";
 		};
-		681CDB262940533400DA599C /* Entitiy */ = {
+		6822415D2944BE0C005AC7D7 /* Manager */ = {
 			isa = PBXGroup;
 			children = (
-				681CDB1D294052BC00DA599C /* KeyframeImage.swift */,
+				68CA6B852940A51300C3ABC6 /* VideoRecodeManager.swift */,
+				68CA6B772940A30900C3ABC6 /* LightCompressor.swift */,
+				681CDB452940558D00DA599C /* VideoHelpManeger.swift */,
+				68CA6B812940A40600C3ABC6 /* VideoCachingManeger.swift */,
 			);
-			path = Entitiy;
+			path = Manager;
+			sourceTree = "<group>";
+		};
+		6822415E2944BF83005AC7D7 /* VideoEdit+Controller */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB392940549300DA599C /* VideoPlayViewController.swift */,
+				681CDB372940548F00DA599C /* Extension+VideoPlayViewController.swift */,
+			);
+			path = "VideoEdit+Controller";
+			sourceTree = "<group>";
+		};
+		6822415F2944BFA6005AC7D7 /* VideoList+Contrller */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB292940539D00DA599C /* VideoListViewController.swift */,
+				681CDB2B294053C300DA599C /* VideoListViewController+Extension.swift */,
+			);
+			path = "VideoList+Contrller";
+			sourceTree = "<group>";
+		};
+		682241602944C038005AC7D7 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				F611A1F52937A36F00828FCB /* AppDelegate.swift */,
+				F611A1F72937A36F00828FCB /* SceneDelegate.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		682241612944C134005AC7D7 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB3B294054AD00DA599C /* ScreenSize.swift */,
+				681CDB412940551D00DA599C /* Reusable.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		682241622944C17B005AC7D7 /* VideoList+View */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB2D2940542800DA599C /* VideoCollectionViewCell.swift */,
+				681CDB2F2940542800DA599C /* VideoListCollectionHeaderView.swift */,
+			);
+			path = "VideoList+View";
+			sourceTree = "<group>";
+		};
+		682241632944C187005AC7D7 /* VideoEdit+View */ = {
+			isa = PBXGroup;
+			children = (
+				682241642944C1AC005AC7D7 /* VideoEdit+Cell */,
+				6822415C2944BDD7005AC7D7 /* Video+Indicator */,
+			);
+			path = "VideoEdit+View";
+			sourceTree = "<group>";
+		};
+		682241642944C1AC005AC7D7 /* VideoEdit+Cell */ = {
+			isa = PBXGroup;
+			children = (
+				681CDB332940547800DA599C /* Extension+VideoNavigationView.swift */,
+				681CDB2E2940542800DA599C /* VideoNavigationCollectionCell.swift */,
+			);
+			path = "VideoEdit+Cell";
 			sourceTree = "<group>";
 		};
 		68CA6B752940A20D00C3ABC6 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				6822415A2944BDB6005AC7D7 /* VideoTakeController */,
+				682241592944BDB3005AC7D7 /* VideoEdit */,
 				68CA6B762940A22C00C3ABC6 /* VideoList */,
-				681CDB372940548F00DA599C /* Extension+VideoPlayViewController.swift */,
-				681CDB3D294054F100DA599C /* UIViewController+Extension.swift */,
-				681CDB432940553C00DA599C /* UICollectionView+Extension.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -144,7 +249,9 @@
 		68CA6B762940A22C00C3ABC6 /* VideoList */ = {
 			isa = PBXGroup;
 			children = (
-				681CDB2B294053C300DA599C /* VideoListViewController+Extension.swift */,
+				681CDB272940537200DA599C /* VideoListViewModel.swift */,
+				682241622944C17B005AC7D7 /* VideoList+View */,
+				6822415F2944BFA6005AC7D7 /* VideoList+Contrller */,
 			);
 			path = VideoList;
 			sourceTree = "<group>";
@@ -171,34 +278,15 @@
 		F611A1F42937A36F00828FCB /* FastCut */ = {
 			isa = PBXGroup;
 			children = (
+				682241612944C134005AC7D7 /* Protocol */,
+				682241602944C038005AC7D7 /* Scene */,
+				6822415D2944BE0C005AC7D7 /* Manager */,
+				6822415B2944BDC6005AC7D7 /* Extensions */,
 				68CA6B872940A53200C3ABC6 /* CoreData */,
 				68CA6B752940A20D00C3ABC6 /* Controller */,
 				681CDB262940533400DA599C /* Entitiy */,
-				681CDB252940532800DA599C /* View */,
-				F611A1F52937A36F00828FCB /* AppDelegate.swift */,
-				F611A1F72937A36F00828FCB /* SceneDelegate.swift */,
-				681CDB3B294054AD00DA599C /* ScreenSize.swift */,
-				681CDB272940537200DA599C /* VideoListViewModel.swift */,
-				681CDB292940539D00DA599C /* VideoListViewController.swift */,
-				681CDB2D2940542800DA599C /* VideoCollectionViewCell.swift */,
-				681CDB2F2940542800DA599C /* VideoListCollectionHeaderView.swift */,
-				681CDB332940547800DA599C /* Extension+VideoNavigationView.swift */,
-				681CDB2E2940542800DA599C /* VideoNavigationCollectionCell.swift */,
-				681CDB392940549300DA599C /* VideoPlayViewController.swift */,
-				681CDB452940558D00DA599C /* VideoHelpManeger.swift */,
-				68CA6B852940A51300C3ABC6 /* VideoRecodeManager.swift */,
-				68CA6B792940A34100C3ABC6 /* AVPlayer+Extension.swift */,
-				68CA6B7B2940A35D00C3ABC6 /* AVAsset+Extension.swift */,
-				68CA6B7D2940A38500C3ABC6 /* TrimError.swift */,
-				68CA6B772940A30900C3ABC6 /* LightCompressor.swift */,
-				681CDB352940548100DA599C /* VideoNavigationView.swift */,
-				68CA6B7F2940A3AE00C3ABC6 /* VideoFrameImage.swift */,
-				68CA6B812940A40600C3ABC6 /* VideoCachingManeger.swift */,
 				F611A1F92937A36F00828FCB /* ViewController.swift */,
-				681CDB3F2940550300DA599C /* UIView+Extension.swift */,
-				681CDB412940551D00DA599C /* Reusable.swift */,
 				68CA6B832940A46D00C3ABC6 /* DateCalculation.swift */,
-				68CA6B8F2940A78400C3ABC6 /* Data+Extension.swift */,
 				F611A1FE2937A37300828FCB /* Assets.xcassets */,
 				F611A2032937A37300828FCB /* Info.plist */,
 			);

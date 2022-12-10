@@ -22,7 +22,7 @@ protocol VideoNavigationViewDelegate {
     func didChangeTimeValue(videoRangeSlider: VideoNavigationView, startTime: Float64, endTime: Float64)
 }
 
-public class VideoNavigationView: UIView {
+final class VideoNavigationView: UIView {
     var delegate: VideoNavigationViewDelegate?
     var _displayKeyframeImages: [KeyframeImage] = []
     var _displayVideoframeImages: [VideoFrameImage] = []
@@ -67,11 +67,11 @@ public class VideoNavigationView: UIView {
     var startPercentage: CGFloat = 0 // Represented in percentage
     var endPercentage: CGFloat = 100 // Represented in percentage
 
-    public var minSpace: Float = 1 // In Seconds
-    public var maxSpace: Float = 0 // In Seconds
+     var minSpace: Float = 1 // In Seconds
+     var maxSpace: Float = 0 // In Seconds
 
-    public var isProgressIndicatorSticky: Bool = false
-    public var isProgressIndicatorDraggable: Bool = true
+     var isProgressIndicatorSticky: Bool = false
+     var isProgressIndicatorDraggable: Bool = true
     var isUpdatingThumbnails = false
     var isReceivingGesture: Bool = false
 
@@ -80,7 +80,7 @@ public class VideoNavigationView: UIView {
     var progressIndicatorLeft: Constraint?
     var videoCachingManeger = VideoCachingManeger()
     
-    override public init(frame: CGRect) {
+    override  init(frame: CGRect) {
         super.init(frame: frame)
         isUserInteractionEnabled = true
         backgroundColor = .clear
@@ -103,7 +103,7 @@ public class VideoNavigationView: UIView {
         }
     }
     
-    public func showVideoCutState(_ cutState: Bool = false) {
+     func showVideoCutState(_ cutState: Bool = false) {
         endIndicator.backgroundColor = cutState ? .systemYellow : .black
         startIndicator.backgroundColor = cutState ? .systemYellow : .black
         topLoopView.backgroundColor = cutState ? .systemYellow : .black
@@ -114,7 +114,7 @@ public class VideoNavigationView: UIView {
 extension VideoNavigationView {
     // MARK: - Crop Handle Drag Functions
 
-    @objc public func startDragged(recognizer: UIPanGestureRecognizer) {
+    @objc  func startDragged(recognizer: UIPanGestureRecognizer) {
            let fullWidth = collectionView.frame.width
            updateGestureStatus(recognizer: recognizer)
            let translation = recognizer.translation(in: self)
@@ -166,7 +166,7 @@ extension VideoNavigationView {
            layoutSubviews()
        }
 
-       @objc public func endDragged(recognizer: UIPanGestureRecognizer) {
+       @objc  func endDragged(recognizer: UIPanGestureRecognizer) {
            let fullWidth = collectionView.frame.width
            updateGestureStatus(recognizer: recognizer)
            let translation = recognizer.translation(in: self)
@@ -297,12 +297,12 @@ extension VideoNavigationView {
 }
 
 extension VideoNavigationView: UICollectionViewDelegate, UICollectionViewDataSource {
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return _displayVideoframeImages.count
         // return _displayKeyframeImages.count
     }
 
-    public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: VideoNavigationCollectionCell = collectionView.dequeueCell(indexPath: indexPath)
         cell.configureCell(asset: asset, videoFrame: _displayVideoframeImages[indexPath.row])
         return cell
@@ -310,7 +310,7 @@ extension VideoNavigationView: UICollectionViewDelegate, UICollectionViewDataSou
 }
 
 extension VideoNavigationView: UICollectionViewDelegateFlowLayout {
-    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         var width = (screenWidth - 72) / 5.5
         if asset?.duration.seconds ?? 15 < 15 {
             width = (screenWidth - 72) / 5
@@ -320,17 +320,17 @@ extension VideoNavigationView: UICollectionViewDelegateFlowLayout {
 }
 
 extension VideoNavigationView: UIScrollViewDelegate {
-    public func scrollViewDidScroll(_ scrollView: UIScrollView) {
+     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         // _asset is nil or videoPlayer not readyForDisplay
         progressIndicatorLeft?.update(offset: 0)
         delegate?.videoScrollViewDidScroll(scrollView: scrollView)
     }
 
-    public func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         delegate?.videoScrollViewDidEndDragging(scrollView: scrollView)
     }
 
-    public func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         delegate?.videoScrollViewDidEndDecelerating(scrollView: scrollView)
     }
 }
