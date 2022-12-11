@@ -9,8 +9,9 @@ import UIKit
 
 extension VideoListViewController {
     func insertUI() {
-        view.addSubview(playerView)
-        view.addSubview(collectionView)
+        [playerView, collectionView].forEach {
+            view.addSubview($0)
+        }
     }
     
     func basicSetUI() {
@@ -29,17 +30,21 @@ extension VideoListViewController {
 
 private extension VideoListViewController {
     func playerViewAnchor() {
-       // let topPadding = UIApplication.statusBarView?.frame.height ?? 20
-      //  playerView.frame = CGRect(x: 0, y: topPadding, width: screenWidth, height: screenHeight/2 + 57 - topPadding)
+        playerView.snp.makeConstraints {
+            $0.top.leading.trailing.equalTo(view.safeAreaLayoutGuide)
+            $0.height.equalTo(screenWidth)
+        }
     }
     
     func collectionViewAnchor() {
-        let playerHeight = screenHeight/2 + 57
-        collectionView.frame = CGRect(x: 0, y: screenHeight/2 + 57, width: screenWidth, height: screenHeight - playerHeight)
+        collectionView.snp.makeConstraints {
+            listTopConstraint = $0.top.equalTo(playerView.snp.bottom).constraint
+            $0.leading.trailing.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
     }
     
     func playerViewBasicSet() {
-        playerView.backgroundColor = .white
+        playerView.backgroundColor = .black
         playerView.clipsToBounds = true
         playerView.layer.cornerRadius = 20
         playerView.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
@@ -49,7 +54,6 @@ private extension VideoListViewController {
         rightButton.setTitle("다음", for: .normal)
         rightButton.backgroundColor = .clear
         rightButton.setTitleColor(.systemBlue, for: .normal)
-     //   rightButton.addTarget(self, action: #selector(rightButtonTapped), for: .touchUpInside)
         let barButton = UIBarButtonItem(customView: rightButton)
         navigationItem.rightBarButtonItem = barButton
     }
@@ -58,31 +62,24 @@ private extension VideoListViewController {
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.backgroundColor = .white
-        collectionView.registerHeaderCell(VideoListCollectionHeaderView.self)
         collectionView.registerCell(VideoCollectionViewCell.self)
     }
     
     func backButtonBasicSet() {
-     //   backButton.apply([.renewalBackButton])
-        backButton.setImage(UIImage(named: "WhiteDismiss"), for: .normal)
+        let dismissImage = "chevron.left"
+        backButton.setImage(UIImage(systemName: dismissImage), for: .normal)
+        
         let barButton = UIBarButtonItem(customView: backButton)
         navigationItem.leftBarButtonItem = barButton
-        backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
     }
     
     func navigationBarBasicSet() {
-        //view.backgroundColor = .textBoldBlackColor
+        view.backgroundColor = .systemBackground
         UINavigationBar.appearance().isTranslucent = true
         UINavigationBar.appearance().shadowImage = UIImage()
         UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
-        
-        navigationController?.navigationBar.isTranslucent = true
-        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
-        navigationController?.navigationBar.shadowImage = UIImage()
-        navigationController?.navigationBar.backgroundColor = .clear
-        navigationController?.navigationBar.tintColor = .clear
+        navigationController?.navigationBar.backgroundColor = .systemBackground
         navigationController?.interactivePopGestureRecognizer?.isEnabled = false
         navigationController?.navigationBar.isHidden = false
-        
     }
 }

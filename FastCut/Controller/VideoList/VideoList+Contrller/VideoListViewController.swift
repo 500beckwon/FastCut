@@ -24,6 +24,7 @@ final class VideoListViewController: UIViewController {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 1
         layout.minimumLineSpacing = 1
+        layout.itemSize = CGSize(width: screenWidth/4-1, height: screenWidth/4-1)
         let cView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return cView
     }()
@@ -39,23 +40,30 @@ final class VideoListViewController: UIViewController {
     private let videoList = BehaviorRelay<[VideoItem]>(value: [])
     private let disposeBag = DisposeBag()
     
+    var listTopConstraint: Constraint?
+    
     override  func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.setNavigationBarHidden(false, animated: false)
         insertUI()
         basicSetUI()
         anchorUI()
         bind()
         bindUI()
         requestList.accept(Void())
+        
     }
     
     override  func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if headerRise == true {
-            self.navigationController?.setNavigationBarHidden(true, animated: true)
-        }
         player?.play()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+    }
+    
+    deinit {
+        
     }
     
     private func makeInput() -> VideoListViewModel.Input {
@@ -78,7 +86,7 @@ final class VideoListViewController: UIViewController {
         
         transform
             .confirmSelectedAsset
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] item in
                 guard let self = self else { return }
@@ -87,7 +95,7 @@ final class VideoListViewController: UIViewController {
         
         transform
             .editTapped
-            .observeOn(MainScheduler.instance)
+            .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
             }).disposed(by: disposeBag)
     }
@@ -111,6 +119,7 @@ final class VideoListViewController: UIViewController {
             playerLayer = AVPlayerLayer(player: self.player)
             playerLayer.videoGravity = .resizeAspect
             playerLayer.frame = self.playerView.bounds
+            
             playerView.layer.addSublayer(self.playerLayer)
         } else {
             self.player?.replaceCurrentItem(with: assetItem)
@@ -125,70 +134,17 @@ final class VideoListViewController: UIViewController {
     }
     
     @objc func backButtonTapped() {
-     
-        
         player?.pause()
         player?.replaceCurrentItem(with: nil)
      
     }
 }
 
-extension VideoListViewController: VideoListCollectionHeaderViewDelegate {
-    func didSelectedListupButton(button: UIButton) {
-        headerRise = button.isSelected
-        switch button.isSelected {
-        case true  : upCollectionView()
-        case false : downCollectionView()
-        }
-    }
-    
-    func didSelectedCameraButton() {
-     
-    }
-}
-
-extension VideoListViewController {
-    func upCollectionView() {
-        UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-            guard let self = self else { return }
-            self.navigationController?.setNavigationBarHidden(true, animated: true)
-            self.collectionView.frame.origin.y = -(self.view.safeAreaInsets.top)
-            self.collectionView.frame.size = CGSize(width: self.screenWidth, height: self.screenHeight)
-            self.collectionView.layoutIfNeeded()
-        } completion: { [weak self] _ in
-            guard let self = self else { return }
-            self.navigationController?.setNavigationBarHidden(self.headerRise, animated: true)
-        }
-    }
-    
-    func downCollectionView() {
-        UIView.animate(withDuration: 0.3, delay: 0) { [weak self] in
-            guard let self = self else { return }
-//            let playerHeight = screenHeight/2 + 57
-//            self.collectionView.frame.origin.y = (screenHeight/2 + 57)
-//            self.collectionView.frame.size = CGSize(width: screenWidth, height: screenHeight -  playerHeight)
-            self.collectionView.layoutIfNeeded()
-        } completion: { [weak self] _ in
-            guard let self = self else { return }
-            self.navigationController?.setNavigationBarHidden(self.headerRise, animated: true)
-        }
-    }
-}
-
 extension VideoListViewController: UICollectionViewDelegate {
-     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        let header: VideoListCollectionHeaderView = collectionView.dequeueSupplementaryCell(indexPath: indexPath)
-        listButton = header.listupButton
-        header.delegate = self
-        return header
-    }
-    
      func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let media = videoList.value[indexPath.item].asset
         if headerRise {
             headerRise = false
-            listButton?.isSelected = headerRise
-            downCollectionView()
         }
         selectedAsset.accept(media)
     }
@@ -203,11 +159,5 @@ extension VideoListViewController: UICollectionViewDataSource {
         let cell: VideoCollectionViewCell = collectionView.dequeueCell(indexPath: indexPath)
         cell.requestVideoThumbnail(asset:  videoList.value[indexPath.item].asset)
         return cell
-    }
-}
-
-extension VideoListViewController: UICollectionViewDelegateFlowLayout {
-     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: screenWidth, height: 57)
     }
 }
