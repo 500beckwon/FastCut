@@ -13,8 +13,7 @@ import RxSwift
 import RxCocoa
 
 final class VideoListViewController: UIViewController {
-    
-    var backButton = UIButton(type: .system)
+
     var rightButton = UIButton(type: .system)
     var playerLayer = AVPlayerLayer()
     var playerView = UIView()
@@ -35,25 +34,22 @@ final class VideoListViewController: UIViewController {
     private var headerRise = false
     
     private let viewModel = VideoListViewModel()
-    private let requestList = PublishRelay<Void>()
+    private let requestList = BehaviorRelay<Void>(value: Void())
     private let selectedAsset = PublishRelay<PHAsset>()
     private let videoList = BehaviorRelay<[VideoItem]>(value: [])
     private let disposeBag = DisposeBag()
     
     var listTopConstraint: Constraint?
     
-    override  func viewDidLoad() {
+    override func viewDidLoad() {
         super.viewDidLoad()
         insertUI()
         basicSetUI()
         anchorUI()
-        bind()
         bindUI()
-        requestList.accept(Void())
-        
     }
     
-    override  func viewWillAppear(_ animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         player?.play()
     }
@@ -77,12 +73,22 @@ final class VideoListViewController: UIViewController {
         return VideoListViewModel.Input(fetchVideo: requestList, selectAsset: selectedAsset, editTapped: tapped)
     }
     
-    private func bind() {
+    private func bindUI() {
         let transform = viewModel.transform(input: makeInput())
         transform
             .fetchVideo
-            .bind(to: videoList)
-            .disposed(by: disposeBag)
+            .withUnretained(self)
+            .do(onNext: {
+                guard let firstAsset = $0.1.first?.asset else { return }
+                $0.0.selectedAsset.accept(firstAsset)
+            })
+            .map { $0.1}
+            .bind(to: collectionView
+                .rx
+                .items(cellIdentifier: VideoCollectionViewCell.reuseIdentifier,
+                       cellType: VideoCollectionViewCell.self)) { index, item , cell in
+                cell.requestVideoThumbnail(asset: item.asset)
+            }.disposed(by: disposeBag)
         
         transform
             .confirmSelectedAsset
@@ -98,18 +104,12 @@ final class VideoListViewController: UIViewController {
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
             }).disposed(by: disposeBag)
-    }
-    
-    private func bindUI() {
-        videoList
-            .filter { !$0.isEmpty }
-            .do(onNext: { [weak self] assetList in
-                guard let firstAsset = assetList.first?.asset else { return }
-                self?.selectedAsset.accept(firstAsset)
-            }).asDriver(onErrorJustReturn: [])
-            .drive { [weak self] _ in
-                self?.collectionView.reloadData()
-            }.disposed(by: disposeBag)
+        
+        collectionView.rx
+            .modelSelected(VideoItem.self)
+            .map { $0.asset }
+            .bind(to: selectedAsset)
+            .disposed(by: disposeBag)
     }
     
     func playerLayerBasicSet(_ assetItem: AVPlayerItem) {
@@ -119,7 +119,6 @@ final class VideoListViewController: UIViewController {
             playerLayer = AVPlayerLayer(player: self.player)
             playerLayer.videoGravity = .resizeAspect
             playerLayer.frame = self.playerView.bounds
-            
             playerView.layer.addSublayer(self.playerLayer)
         } else {
             self.player?.replaceCurrentItem(with: assetItem)
@@ -131,33 +130,5 @@ final class VideoListViewController: UIViewController {
     
     func setMute() {
         player?.isMuted = true
-    }
-    
-    @objc func backButtonTapped() {
-        player?.pause()
-        player?.replaceCurrentItem(with: nil)
-     
-    }
-}
-
-extension VideoListViewController: UICollectionViewDelegate {
-     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let media = videoList.value[indexPath.item].asset
-        if headerRise {
-            headerRise = false
-        }
-        selectedAsset.accept(media)
-    }
-}
-
-extension VideoListViewController: UICollectionViewDataSource {
-     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return videoList.value.count
-    }
-    
-     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell: VideoCollectionViewCell = collectionView.dequeueCell(indexPath: indexPath)
-        cell.requestVideoThumbnail(asset:  videoList.value[indexPath.item].asset)
-        return cell
     }
 }

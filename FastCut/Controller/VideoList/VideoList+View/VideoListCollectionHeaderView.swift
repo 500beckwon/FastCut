@@ -19,7 +19,7 @@ final class VideoListCollectionHeaderView: UICollectionReusableView {
     var listupButton = UIButton(type: .system)
     var cameraButton = UIButton(type: .system)
     
-    public override init(frame: CGRect) {
+    override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .white
         insertUI()

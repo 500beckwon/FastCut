@@ -15,7 +15,6 @@ extension VideoListViewController {
     }
     
     func basicSetUI() {
-        backButtonBasicSet()
         playerViewBasicSet()
         collectionViewBasicSet()
         navigationBarBasicSet()
@@ -59,18 +58,8 @@ private extension VideoListViewController {
     }
     
     func collectionViewBasicSet() {
-        collectionView.dataSource = self
-        collectionView.delegate = self
         collectionView.backgroundColor = .white
         collectionView.registerCell(VideoCollectionViewCell.self)
-    }
-    
-    func backButtonBasicSet() {
-        let dismissImage = "chevron.left"
-        backButton.setImage(UIImage(systemName: dismissImage), for: .normal)
-        
-        let barButton = UIBarButtonItem(customView: backButton)
-        navigationItem.leftBarButtonItem = barButton
     }
     
     func navigationBarBasicSet() {
