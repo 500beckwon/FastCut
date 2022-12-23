@@ -5,4 +5,8 @@
 //  Created by ByungHoon Ann on 2022/12/11.
 //
 
-import Foundation
+import Photos
+
+struct VideoItem {
+    let asset: PHAsset
+}
