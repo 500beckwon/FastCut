@@ -5,23 +5,11 @@
 //  Created by ByungHoon Ann on 2022/12/07.
 //
 
-import Foundation
 import Photos
 import RxSwift
 import RxCocoa
 
-struct VideoItem {
-    let asset: PHAsset
-}
-
 final class VideoListViewModel {
-    let fetchOption: PHFetchOptions = {
-        let option = PHFetchOptions()
-        option.includeAssetSourceTypes = [.typeUserLibrary]
-        option.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
-        return option
-    }()
-    
     struct Input {
         let fetchVideo: Observable<Void>
         let selectAsset: Observable<PHAsset>
@@ -43,7 +31,7 @@ final class VideoListViewModel {
     func transform(input: Input) -> Output {
         let requestList = input.fetchVideo.flatMap { [weak self] _ -> Observable<[VideoItem]> in
             guard let self = self else { return .never() }
-            return self.list(option: self.fetchOption)
+            return self.list(option: .fetchOptions())
         }
         
         let selectedAsset = input.selectAsset.flatMap {
@@ -52,7 +40,6 @@ final class VideoListViewModel {
         
         let editTapped = input.editTapped.flatMap { [weak self] _  -> Observable<AVPlayerItem> in
             guard let asset = self?.selectedAsset else { return .never() }
-            
             return PHVideoPlayerOption.requestItem(asset: asset)
         }
         
