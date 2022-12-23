@@ -31,6 +31,11 @@
 		681CDB422940551D00DA599C /* Reusable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CDB412940551D00DA599C /* Reusable.swift */; };
 		681CDB442940553C00DA599C /* UICollectionView+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CDB432940553C00DA599C /* UICollectionView+Extension.swift */; };
 		681CDB462940558D00DA599C /* VideoHelpManeger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 681CDB452940558D00DA599C /* VideoHelpManeger.swift */; };
+		682F0BA52946097E00431E1A /* PHFetchOptions+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BA42946097E00431E1A /* PHFetchOptions+Extension.swift */; };
+		682F0BA729460A1700431E1A /* VideoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BA629460A1700431E1A /* VideoItem.swift */; };
+		682F0BA929460B2F00431E1A /* PHAssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BA829460B2F00431E1A /* PHAssetManager.swift */; };
+		682F0BAB29460B7D00431E1A /* PHImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BAA29460B7D00431E1A /* PHImage.swift */; };
+		682F0BAD29460B9C00431E1A /* PHAssetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BAC29460B9C00431E1A /* PHAssetConfiguration.swift */; };
 		68CA6B782940A30900C3ABC6 /* LightCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA6B772940A30900C3ABC6 /* LightCompressor.swift */; };
 		68CA6B7A2940A34100C3ABC6 /* AVPlayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA6B792940A34100C3ABC6 /* AVPlayer+Extension.swift */; };
 		68CA6B7C2940A35D00C3ABC6 /* AVAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA6B7B2940A35D00C3ABC6 /* AVAsset+Extension.swift */; };
@@ -70,6 +75,11 @@
 		681CDB412940551D00DA599C /* Reusable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reusable.swift; sourceTree = "<group>"; };
 		681CDB432940553C00DA599C /* UICollectionView+Extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Extension.swift"; sourceTree = "<group>"; };
 		681CDB452940558D00DA599C /* VideoHelpManeger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VideoHelpManeger.swift; sourceTree = "<group>"; };
+		682F0BA42946097E00431E1A /* PHFetchOptions+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PHFetchOptions+Extension.swift"; sourceTree = "<group>"; };
+		682F0BA629460A1700431E1A /* VideoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoItem.swift; sourceTree = "<group>"; };
+		682F0BA829460B2F00431E1A /* PHAssetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetManager.swift; sourceTree = "<group>"; };
+		682F0BAA29460B7D00431E1A /* PHImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHImage.swift; sourceTree = "<group>"; };
+		682F0BAC29460B9C00431E1A /* PHAssetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetConfiguration.swift; sourceTree = "<group>"; };
 		68B748F62940AAF000ACC8A3 /* FastCut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FastCut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CA6B772940A30900C3ABC6 /* LightCompressor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightCompressor.swift; sourceTree = "<group>"; };
 		68CA6B792940A34100C3ABC6 /* AVPlayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Extension.swift"; sourceTree = "<group>"; };
@@ -118,6 +128,9 @@
 				681CDB1D294052BC00DA599C /* KeyframeImage.swift */,
 				68CA6B7D2940A38500C3ABC6 /* TrimError.swift */,
 				68CA6B7F2940A3AE00C3ABC6 /* VideoFrameImage.swift */,
+				682F0BA629460A1700431E1A /* VideoItem.swift */,
+				682F0BAA29460B7D00431E1A /* PHImage.swift */,
+				682F0BAC29460B9C00431E1A /* PHAssetConfiguration.swift */,
 			);
 			path = Entitiy;
 			sourceTree = "<group>";
@@ -148,6 +161,7 @@
 				681CDB3D294054F100DA599C /* UIViewController+Extension.swift */,
 				681CDB432940553C00DA599C /* UICollectionView+Extension.swift */,
 				681CDB3F2940550300DA599C /* UIView+Extension.swift */,
+				682F0BA42946097E00431E1A /* PHFetchOptions+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -169,6 +183,7 @@
 				68CA6B772940A30900C3ABC6 /* LightCompressor.swift */,
 				681CDB452940558D00DA599C /* VideoHelpManeger.swift */,
 				68CA6B812940A40600C3ABC6 /* VideoCachingManeger.swift */,
+				682F0BA829460B2F00431E1A /* PHAssetManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -374,6 +389,7 @@
 			files = (
 				681CDB302940542800DA599C /* VideoCollectionViewCell.swift in Sources */,
 				681CDB3A2940549400DA599C /* VideoPlayViewController.swift in Sources */,
+				682F0BA929460B2F00431E1A /* PHAssetManager.swift in Sources */,
 				68CA6B822940A40600C3ABC6 /* VideoCachingManeger.swift in Sources */,
 				68CA6B8E2940A6A000C3ABC6 /* VideoRecode+CoreDataProperties.swift in Sources */,
 				681CDB2A2940539D00DA599C /* VideoListViewController.swift in Sources */,
@@ -391,6 +407,9 @@
 				681CDB382940549000DA599C /* Extension+VideoPlayViewController.swift in Sources */,
 				681CDB22294052FE00DA599C /* VideoEndIndicator.swift in Sources */,
 				681CDB442940553C00DA599C /* UICollectionView+Extension.swift in Sources */,
+				682F0BA729460A1700431E1A /* VideoItem.swift in Sources */,
+				682F0BAD29460B9C00431E1A /* PHAssetConfiguration.swift in Sources */,
+				682F0BA52946097E00431E1A /* PHFetchOptions+Extension.swift in Sources */,
 				68CA6B782940A30900C3ABC6 /* LightCompressor.swift in Sources */,
 				681CDB462940558D00DA599C /* VideoHelpManeger.swift in Sources */,
 				681CDB1E294052BC00DA599C /* KeyframeImage.swift in Sources */,
@@ -399,6 +418,7 @@
 				68CA6B862940A51300C3ABC6 /* VideoRecodeManager.swift in Sources */,
 				681CDB322940542800DA599C /* VideoListCollectionHeaderView.swift in Sources */,
 				681CDB342940547800DA599C /* Extension+VideoNavigationView.swift in Sources */,
+				682F0BAB29460B7D00431E1A /* PHImage.swift in Sources */,
 				68CA6B8A2940A5BC00C3ABC6 /* VideoRecode.xcdatamodeld in Sources */,
 				681CDB312940542800DA599C /* VideoNavigationCollectionCell.swift in Sources */,
 				681CDB20294052DE00DA599C /* VideoProgressIndicator.swift in Sources */,
