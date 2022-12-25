@@ -12,18 +12,16 @@ import RxCocoa
 final class VideoListViewModel {
     struct Input {
         let fetchVideo: Observable<Void>
-        let selectAsset: Observable<PHAsset>
+        let selectAsset: Observable<VideoItem>
         let editTapped: Observable<Void>
     }
     
     struct Output {
         let fetchVideo: Observable<[VideoItem]>
         let confirmSelectedAsset: Observable<AVPlayerItem>
-        let editTapped: Observable<AVPlayerItem>
+        let editTapped: Observable<VideoItem>
     }
-    
-    var selectedAsset: PHAsset?
-    
+        
     init() {
         
     }
@@ -35,13 +33,10 @@ final class VideoListViewModel {
         }
         
         let selectedAsset = input.selectAsset.flatMap {
-            return PHVideoPlayerOption.requestItem(asset: $0)
+            return PHVideoPlayerOption.requestItem(asset: $0.asset)
         }
         
-        let editTapped = input.editTapped.flatMap { [weak self] _  -> Observable<AVPlayerItem> in
-            guard let asset = self?.selectedAsset else { return .never() }
-            return PHVideoPlayerOption.requestItem(asset: asset)
-        }
+        let editTapped = input.selectAsset
         
         return Output(fetchVideo: requestList,
                       confirmSelectedAsset: selectedAsset,
@@ -52,7 +47,9 @@ final class VideoListViewModel {
         return Observable.create { ob in
             if #available(iOS 14.0, *) {
                 PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                    
+                    if status == .notDetermined {
+                        
+                    }
                     if status == .authorized {
                       //  let list =  PHAsset.fetchAssets(with: .video, options: option)
                         let list = PHAsset.fetchAssets(with: .video, options: option)
