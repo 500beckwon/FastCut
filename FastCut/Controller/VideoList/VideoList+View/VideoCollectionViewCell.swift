@@ -35,18 +35,18 @@ final class VideoCollectionViewCell: UICollectionViewCell {
 extension VideoCollectionViewCell {
     func requestVideoThumbnail(asset: PHAsset?) {
         guard let asset = asset else { return }
-        let size = CGSize(width: screenWidth / 3, height: screenWidth / 3)
+        let size = CGSize(width: screenWidth / 3, height: screenHeight / 3)
         let phVideoOption = PHVideoRequestOptions()
         phVideoOption.isNetworkAccessAllowed = true
-        phVideoOption.deliveryMode = .fastFormat
+        phVideoOption.deliveryMode = .automatic
         phVideoOption.version = .current
 
         let imageRequestOption = PHImageRequestOptions()
-        imageRequestOption.deliveryMode = .fastFormat
+        imageRequestOption.deliveryMode = .highQualityFormat
         imageRequestOption.isNetworkAccessAllowed = true
-
         PHCachingImageManager.default().requestImage(for: asset, targetSize: size, contentMode: .aspectFill , options: imageRequestOption) { image, hash in
             DispatchQueue.main.async { [weak self] in
+
                 self?.assetImageView.image = image
             }
         }
@@ -101,14 +101,15 @@ private extension VideoCollectionViewCell {
         timeLabel.snp.makeConstraints {
             $0.bottom.equalTo(contentView.snp.bottom).offset(-8)
             $0.trailing.equalTo(contentView.snp.trailing).offset(-8)
-            $0.height.equalTo(20)
+            $0.height.equalTo(18)
+            $0.width.equalTo(50)
         }
     }
 
     func timeLabelBasicSet() {
         timeLabel.textColor = .white
         timeLabel.textAlignment = .center
-        timeLabel.backgroundColor = .clear
+        timeLabel.backgroundColor = .black
         timeLabel.font = .boldSystemFont(ofSize: 12)
         timeLabel.layer.cornerRadius = 5
         timeLabel.clipsToBounds = true
