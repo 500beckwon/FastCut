@@ -13,62 +13,54 @@ import RxSwift
 import RxCocoa
 
 final class VideoListViewController: UIViewController {
-
     var rightButton = UIButton(type: .system)
-    var playerLayer = AVPlayerLayer()
-    var playerView = UIView()
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 1
         layout.minimumLineSpacing = 1
-        layout.itemSize = CGSize(width: screenWidth/4-1, height: screenWidth/4-1)
+        layout.itemSize = CGSize(width: screenWidth/3-1, height: screenHeight/3-1)
         let cView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return cView
     }()
     
     private var listButton: UIButton?
-    private var videoItem: AVPlayerItem?
-    private var player: AVPlayer?
-    private var headerRise = false
     
     private let viewModel = VideoListViewModel()
     private let requestList = BehaviorRelay<Void>(value: Void())
-    private let selectedAsset = PublishRelay<PHAsset>()
+    private let selectedAsset = PublishRelay<VideoItem>()
     private let videoList = BehaviorRelay<[VideoItem]>(value: [])
     private let disposeBag = DisposeBag()
     
     var listTopConstraint: Constraint?
     
+    let playerManager = VideoPlayerManager.shared
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        PHPhotoLibrary.authorized.subscribe(onNext: {
+            print($0)
+        }).disposed(by: disposeBag)
         insertUI()
         basicSetUI()
         anchorUI()
         bindUI()
+        rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+            .map { _ in Void() }
+            .asDriver { _ in Driver.empty() }
+            .drive (onNext:{
+              print($0,"asdfsdafa")
+            }).disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        player?.play()
     }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-    }
-    
-    deinit {
-        
-    }
-    
+
     private func makeInput() -> VideoListViewModel.Input {
-        let requestList = requestList.do()
-        let selectedAsset = selectedAsset.do(onNext: { [weak self] in
-            self?.viewModel.selectedAsset = $0
-            self?.player?.pause()
-        })
-        
+        let requestList = requestList.asObservable()
+        let selectedAsset = selectedAsset.asObservable()
         let tapped = rightButton.rx.tap.throttle(.seconds(1), scheduler: MainScheduler.instance)
         return VideoListViewModel.Input(fetchVideo: requestList, selectAsset: selectedAsset, editTapped: tapped)
     }
@@ -78,11 +70,7 @@ final class VideoListViewController: UIViewController {
         transform
             .fetchVideo
             .withUnretained(self)
-            .do(onNext: {
-                guard let firstAsset = $0.1.first?.asset else { return }
-                $0.0.selectedAsset.accept(firstAsset)
-            })
-            .map { $0.1}
+            .map { $0.1 }
             .bind(to: collectionView
                 .rx
                 .items(cellIdentifier: VideoCollectionViewCell.reuseIdentifier,
@@ -96,39 +84,20 @@ final class VideoListViewController: UIViewController {
             .throttle(.seconds(1), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] item in
                 guard let self = self else { return }
-                self.playerLayerBasicSet(item)
+              
             }).disposed(by: disposeBag)
         
         transform
             .editTapped
             .observe(on: MainScheduler.instance)
             .subscribe(onNext: { [weak self] _ in
+                
             }).disposed(by: disposeBag)
         
         collectionView.rx
             .modelSelected(VideoItem.self)
-            .map { $0.asset }
+            .map { $0 }
             .bind(to: selectedAsset)
             .disposed(by: disposeBag)
-    }
-    
-    func playerLayerBasicSet(_ assetItem: AVPlayerItem) {
-        if player?.currentItem == nil {
-            player = AVPlayer(playerItem: assetItem)
-            player?.isMuted = false
-            playerLayer = AVPlayerLayer(player: self.player)
-            playerLayer.videoGravity = .resizeAspect
-            playerLayer.frame = self.playerView.bounds
-            playerView.layer.addSublayer(self.playerLayer)
-        } else {
-            self.player?.replaceCurrentItem(with: assetItem)
-        }
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        player?.play()
-        setMute()
-    }
-    
-    func setMute() {
-        player?.isMuted = true
     }
 }
