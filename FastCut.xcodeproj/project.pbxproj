@@ -36,6 +36,9 @@
 		682F0BA929460B2F00431E1A /* PHAssetManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BA829460B2F00431E1A /* PHAssetManager.swift */; };
 		682F0BAB29460B7D00431E1A /* PHImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BAA29460B7D00431E1A /* PHImage.swift */; };
 		682F0BAD29460B9C00431E1A /* PHAssetConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 682F0BAC29460B9C00431E1A /* PHAssetConfiguration.swift */; };
+		683A35A529583F99005A09DA /* VideoPlayerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A35A429583F99005A09DA /* VideoPlayerManager.swift */; };
+		683A35A72958503D005A09DA /* VideoItemViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A35A62958503D005A09DA /* VideoItemViewModel.swift */; };
+		683A35AD29588152005A09DA /* PHPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 683A35AC29588152005A09DA /* PHPhotoLibrary.swift */; };
 		68CA6B782940A30900C3ABC6 /* LightCompressor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA6B772940A30900C3ABC6 /* LightCompressor.swift */; };
 		68CA6B7A2940A34100C3ABC6 /* AVPlayer+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA6B792940A34100C3ABC6 /* AVPlayer+Extension.swift */; };
 		68CA6B7C2940A35D00C3ABC6 /* AVAsset+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68CA6B7B2940A35D00C3ABC6 /* AVAsset+Extension.swift */; };
@@ -80,6 +83,9 @@
 		682F0BA829460B2F00431E1A /* PHAssetManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetManager.swift; sourceTree = "<group>"; };
 		682F0BAA29460B7D00431E1A /* PHImage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHImage.swift; sourceTree = "<group>"; };
 		682F0BAC29460B9C00431E1A /* PHAssetConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHAssetConfiguration.swift; sourceTree = "<group>"; };
+		683A35A429583F99005A09DA /* VideoPlayerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPlayerManager.swift; sourceTree = "<group>"; };
+		683A35A62958503D005A09DA /* VideoItemViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoItemViewModel.swift; sourceTree = "<group>"; };
+		683A35AC29588152005A09DA /* PHPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPhotoLibrary.swift; sourceTree = "<group>"; };
 		68B748F62940AAF000ACC8A3 /* FastCut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FastCut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68CA6B772940A30900C3ABC6 /* LightCompressor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LightCompressor.swift; sourceTree = "<group>"; };
 		68CA6B792940A34100C3ABC6 /* AVPlayer+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AVPlayer+Extension.swift"; sourceTree = "<group>"; };
@@ -162,6 +168,7 @@
 				681CDB432940553C00DA599C /* UICollectionView+Extension.swift */,
 				681CDB3F2940550300DA599C /* UIView+Extension.swift */,
 				682F0BA42946097E00431E1A /* PHFetchOptions+Extension.swift */,
+				683A35AC29588152005A09DA /* PHPhotoLibrary.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -184,6 +191,7 @@
 				681CDB452940558D00DA599C /* VideoHelpManeger.swift */,
 				68CA6B812940A40600C3ABC6 /* VideoCachingManeger.swift */,
 				682F0BA829460B2F00431E1A /* PHAssetManager.swift */,
+				683A35A429583F99005A09DA /* VideoPlayerManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -265,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				681CDB272940537200DA599C /* VideoListViewModel.swift */,
+				683A35A62958503D005A09DA /* VideoItemViewModel.swift */,
 				682241622944C17B005AC7D7 /* VideoList+View */,
 				6822415F2944BFA6005AC7D7 /* VideoList+Contrller */,
 			);
@@ -398,6 +407,7 @@
 				F611A1FA2937A36F00828FCB /* ViewController.swift in Sources */,
 				681CDB282940537200DA599C /* VideoListViewModel.swift in Sources */,
 				681CDB422940551D00DA599C /* Reusable.swift in Sources */,
+				683A35A529583F99005A09DA /* VideoPlayerManager.swift in Sources */,
 				681CDB3C294054AD00DA599C /* ScreenSize.swift in Sources */,
 				68CA6B802940A3AE00C3ABC6 /* VideoFrameImage.swift in Sources */,
 				68CA6B842940A46D00C3ABC6 /* DateCalculation.swift in Sources */,
@@ -409,12 +419,14 @@
 				681CDB442940553C00DA599C /* UICollectionView+Extension.swift in Sources */,
 				682F0BA729460A1700431E1A /* VideoItem.swift in Sources */,
 				682F0BAD29460B9C00431E1A /* PHAssetConfiguration.swift in Sources */,
+				683A35AD29588152005A09DA /* PHPhotoLibrary.swift in Sources */,
 				682F0BA52946097E00431E1A /* PHFetchOptions+Extension.swift in Sources */,
 				68CA6B782940A30900C3ABC6 /* LightCompressor.swift in Sources */,
 				681CDB462940558D00DA599C /* VideoHelpManeger.swift in Sources */,
 				681CDB1E294052BC00DA599C /* KeyframeImage.swift in Sources */,
 				68CA6B902940A78400C3ABC6 /* Data+Extension.swift in Sources */,
 				F611A1F62937A36F00828FCB /* AppDelegate.swift in Sources */,
+				683A35A72958503D005A09DA /* VideoItemViewModel.swift in Sources */,
 				68CA6B862940A51300C3ABC6 /* VideoRecodeManager.swift in Sources */,
 				681CDB322940542800DA599C /* VideoListCollectionHeaderView.swift in Sources */,
 				681CDB342940547800DA599C /* Extension+VideoNavigationView.swift in Sources */,
