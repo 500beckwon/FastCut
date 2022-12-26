@@ -24,13 +24,11 @@ final class VideoListViewController: UIViewController {
         let cView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         return cView
     }()
-    
-    private var listButton: UIButton?
-    
+        
     private let viewModel = VideoListViewModel()
-    private let requestList = BehaviorRelay<Void>(value: Void())
-    private let selectedAsset = PublishRelay<VideoItem>()
-    private let videoList = BehaviorRelay<[VideoItem]>(value: [])
+    private let requestList = Driver.just(Void())
+ //   private let selectedAsset = PublishRelay<VideoItem>()
+   // private let videoList = BehaviorRelay<[VideoItem]>(value: [])
     private let disposeBag = DisposeBag()
     
     var listTopConstraint: Constraint?
@@ -46,12 +44,12 @@ final class VideoListViewController: UIViewController {
         basicSetUI()
         anchorUI()
         bindUI()
-        rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
-            .map { _ in Void() }
-            .asDriver { _ in Driver.empty() }
-            .drive (onNext:{
-              print($0,"asdfsdafa")
-            }).disposed(by: disposeBag)
+//        rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
+//            .map { _ in Void() }
+//            .asDriver { _ in Driver.empty() }
+//            .drive (onNext:{
+//              print($0,"asdfsdafa")
+//            }).disposed(by: disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -59,9 +57,9 @@ final class VideoListViewController: UIViewController {
     }
 
     private func makeInput() -> VideoListViewModel.Input {
-        let requestList = requestList.asObservable()
-        let selectedAsset = selectedAsset.asObservable()
-        let tapped = rightButton.rx.tap.throttle(.seconds(1), scheduler: MainScheduler.instance)
+        let requestList = requestList
+        let selectedAsset = collectionView.rx.modelSelected(VideoItem.self).asDriver()
+        let tapped = rightButton.rx.tap.throttle(.seconds(1), scheduler: MainScheduler.instance).asDriver(onErrorJustReturn: Void())
         return VideoListViewModel.Input(fetchVideo: requestList, selectAsset: selectedAsset, editTapped: tapped)
     }
     
@@ -69,9 +67,7 @@ final class VideoListViewController: UIViewController {
         let transform = viewModel.transform(input: makeInput())
         transform
             .fetchVideo
-            .withUnretained(self)
-            .map { $0.1 }
-            .bind(to: collectionView
+            .drive(collectionView
                 .rx
                 .items(cellIdentifier: VideoCollectionViewCell.reuseIdentifier,
                        cellType: VideoCollectionViewCell.self)) { index, item , cell in
@@ -80,24 +76,17 @@ final class VideoListViewController: UIViewController {
         
         transform
             .confirmSelectedAsset
-            .observe(on: MainScheduler.instance)
-            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] item in
+            .throttle(.milliseconds(250))
+            .drive(onNext: { [weak self] item in
                 guard let self = self else { return }
               
             }).disposed(by: disposeBag)
         
         transform
             .editTapped
-            .observe(on: MainScheduler.instance)
-            .subscribe(onNext: { [weak self] _ in
+            .drive(onNext: { [weak self] _ in
                 
             }).disposed(by: disposeBag)
-        
-        collectionView.rx
-            .modelSelected(VideoItem.self)
-            .map { $0 }
-            .bind(to: selectedAsset)
-            .disposed(by: disposeBag)
+    
     }
 }
