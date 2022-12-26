@@ -7,6 +7,8 @@
 
 import Photos
 import UIKit
+import RxCocoa
+import RxSwift
 
 final class PHAssetManager {
     static let shared = PHAssetManager()
@@ -175,6 +177,23 @@ extension PHAssetManager {
                         completion: @escaping(AVAsset?, AVAudioMix?,
                                               [AnyHashable : Any]?) -> Void) {
         PHImageManager.default().requestAVAsset(forVideo: asset, options: self.videoRequestOptions, resultHandler: completion)
+    }
+    
+    func requestAVPlayerItem(for asset: PHAsset) -> Driver<AVPlayerItem> {
+        return Observable.create { [weak self] ob in
+            guard let self = self else { fatalError() }
+            PHImageManager
+                .default()
+                .requestAVAsset(forVideo: asset, options: self.videoRequestOptions) { asset, mix, info in
+                    guard let asset = asset else {
+                        return
+                    }
+                    let item = AVPlayerItem(asset: asset)
+                    ob.onNext(item)
+                    ob.onCompleted()
+                }
+            return Disposables.create()
+        }.asDriver(onErrorDriveWith: Driver.empty())
     }
 }
 
