@@ -11,29 +11,35 @@ import RxCocoa
 
 final class VideoListViewModel {
     struct Input {
-        let fetchVideo: Observable<Void>
-        let selectAsset: Observable<VideoItem>
-        let editTapped: Observable<Void>
+        let fetchVideo: Driver<Void>
+        let selectAsset: Driver<VideoItem>
+        let editTapped: Driver<Void>
     }
     
     struct Output {
-        let fetchVideo: Observable<[VideoItem]>
-        let confirmSelectedAsset: Observable<AVPlayerItem>
-        let editTapped: Observable<VideoItem>
+        let fetchVideo: Driver<[VideoItem]>
+        let confirmSelectedAsset: Driver<AVPlayerItem>
+        let editTapped: Driver<VideoItem>
     }
-        
-    init() {
-        
+    
+    let useCase: VideoListUseCase
+    let assetManager: PHAssetManager
+     
+    init(assetManager: PHAssetManager = PHAssetManager.shared,
+         useCase: VideoListUseCase = VideoListUseCaseImpl()) {
+        self.useCase = useCase
+        self.assetManager = assetManager
     }
     
     func transform(input: Input) -> Output {
-        let requestList = input.fetchVideo.flatMap { [weak self] _ -> Observable<[VideoItem]> in
+        let requestList = input.fetchVideo.flatMap { [weak self] _ -> Driver<[VideoItem]> in
             guard let self = self else { return .never() }
-            return self.list(option: .fetchOptions())
+            return self.useCase.requestVideoAssetList(with: self.assetManager)
         }
         
-        let selectedAsset = input.selectAsset.flatMap {
-            return PHVideoPlayerOption.requestItem(asset: $0.asset)
+        let selectedAsset = input.selectAsset.flatMap { [weak self] item -> Driver<AVPlayerItem> in
+            guard let self = self else { return .never() }
+            return self.useCase.requestVideoPlayerItem(assetManager: self.assetManager, for: item.asset)
         }
         
         let editTapped = input.selectAsset
@@ -42,53 +48,6 @@ final class VideoListViewModel {
                       confirmSelectedAsset: selectedAsset,
                       editTapped: editTapped)
     }
-    
-    func list(option: PHFetchOptions) -> Observable<[VideoItem]> {
-        return Observable.create { ob in
-            if #available(iOS 14.0, *) {
-                PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
-                    if status == .notDetermined {
-                        
-                    }
-                    if status == .authorized {
-                      //  let list =  PHAsset.fetchAssets(with: .video, options: option)
-                        let list = PHAsset.fetchAssets(with: .video, options: option)
-                        let items = list.objects(at: IndexSet(0..<list.count)).map { VideoItem(asset: $0) }
-                        ob.onNext(items)
-                    }
-                    
-                    if status != .authorized {
-                        ob.onNext([])
-                    }
-                    ob.onCompleted()
-                }
-            }
-            return Disposables.create()
-        }
-    }
 }
 
-class PHVideoPlayerOption: PHVideoRequestOptions {
-    override init() {
-        super.init()
-        isNetworkAccessAllowed = true
-        deliveryMode = .fastFormat
-        version = .current
-    }
-    
-    static func requestItem(asset: PHAsset) -> Observable<AVPlayerItem> {
-        return Observable.create { ob in
-            PHImageManager
-                .default()
-                .requestAVAsset(forVideo: asset, options: PHVideoPlayerOption()) { asset, mix, info in
-                    guard let asset = asset else {
-                        return
-                    }
-                    let item = AVPlayerItem(asset: asset)
-                    ob.onNext(item)
-                    ob.onCompleted()
-                }
-            return Disposables.create()
-        }
-    }
-}
+
